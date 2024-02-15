@@ -5,6 +5,6 @@ from .celery import app
 # __all__ = ('celery_app',)
 
 # mysql
-import pymysql
+# import pymysql
 
-pymysql.install_as_MySQLdb()
+# pymysql.install_as_MySQLdb()
