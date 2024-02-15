@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "oeliks-server"
+version = "0.1.0"
+description = "project oeliks"
+authors = ["Nick <nickphilomath@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^5.0.2"
+djangorestframework = "^3.14.0"
+celery = "^5.3.6"
+dj-database-url = "^2.1.0"
+python-dotenv = "^1.0.1"
+django-cors-headers = "^4.3.1"
+setuptools = "^69.1.0"
+pymysql = "^1.1.0"
+djangorestframework-simplejwt = "^5.3.1"
+django-redis = "^5.4.0"
+
+[tool.poetry.dev-dependencies]
+django-debug-toolbar = "^4.3.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
