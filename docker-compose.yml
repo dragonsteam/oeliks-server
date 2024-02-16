@@ -19,7 +19,7 @@ services:
     image: mysql:8.0
     ports:
       - 3306:3306
-    restart: always
+    # restart: always
     environment:
       - MYSQL_DATABASE=oeliks_db
       - MYSQL_ROOT_PASSWORD=pwd

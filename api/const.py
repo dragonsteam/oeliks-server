@@ -1,5 +1,12 @@
 USER_ROLES = [
-    ("own", "Owner"),
-    ("acc", "Accountant"),
     ("gue", "Guest"),
+    ("cli", "Client"),
+    ("adm", "Admin"),
+]
+
+LANGUAGES = [
+    ("uz", "Uzbek"),
+    ("uz-kr", "Uzbek-Krilic"),
+    ("ru", "Russian"),
+    ("en", "English"),
 ]
