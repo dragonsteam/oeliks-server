@@ -25,14 +25,23 @@ def custom404(request, exception=None):
 #     return False
 
 
-@api_view(["GET"])
-@permission_classes([AllowAny])
-def api(request):
-    return Response("hello world", status=status.HTTP_200_OK)
-
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def ping_pong(request):
     # update_trucks()
     return Response("pong", status=status.HTTP_200_OK)
+
+
+# 
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def register(request):
+    pass
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def users(request):
+    pass
