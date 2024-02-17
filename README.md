@@ -1,13 +1,18 @@
 # oeliks-server
+better clone version of OLX online market platform
 
+## Setting up with docker
+- install docker engine
+- clone the repository
+- `docker compose up --build`
 
-## Setting up
+## Setting up manually
 
 - install python and docker
 - `pip install poetry`
 - `poetry install`
 
-## Running the server
+### Running the server
 
 - `sudo docker run -d -p 6379:6379 redis:6.2-alpine`
 - `sudo docker run -e MYSQL_ROOT_PASSWORD=pwd -d -p 3306:3306 mysql`
