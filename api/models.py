@@ -12,13 +12,13 @@ class User(AbstractUser):
     
     # email = models.EmailField(unique=True)
     # access = models.OneToOneField(Access, null=True, on_delete=models.SET_NULL)
-    first_name = models.CharField(max_length=128)
-    last_name = models.CharField(max_length=128)
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
     phone = models.CharField(
-        max_length=10,
+        max_length=9,
         unique=True,
         help_text =_(
-            "Required. 10 characters. numbers only."
+            "Required. 9 characters. numbers only."
         ),
         validators=[phone_validator],
         error_messages={
