@@ -10,3 +10,11 @@ class UnicodePhoneValidator(validators.RegexValidator):
         "Enter a valid phone number. This value may contain only 9 numbers."
     )
     flags = 0
+
+
+class UnicodeTitleValidator(validators.RegexValidator):
+    regex = r".{16,}"
+    message = _(
+        "Enter a valid text. This value cannot be less than 16 characters."
+    )
+    flags = 0

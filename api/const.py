@@ -10,3 +10,9 @@ LANGUAGES = [
     ("ru", "Russian"),
     ("en", "English"),
 ]
+
+CURRENCIES = [
+    ("UZS", "Uzbek Sums"),
+    ("USD", "US Dollars"),
+    ("RUB", "Russian Rubles"),
+]

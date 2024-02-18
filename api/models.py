@@ -1,10 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 
-from .validators import UnicodePhoneValidator
-from .const import USER_ROLES, LANGUAGES
+from .validators import UnicodePhoneValidator, UnicodeTitleValidator
+from .const import USER_ROLES, LANGUAGES, CURRENCIES
 
 # models here
 class User(AbstractUser):
@@ -34,3 +35,25 @@ class User(AbstractUser):
     role = models.CharField(max_length=3, null=True, choices=USER_ROLES)
 
     USERNAME_FIELD = "phone"
+
+
+class Ad(models.Model):
+    title_validator = UnicodeTitleValidator()
+
+    title = models.CharField(
+        max_length=70,
+        validators=[title_validator],
+    )
+    # category
+    # pictures = 
+    aboute = models.CharField(max_length=2048, blank=True)
+    price_method = models.CharField(max_length=1, choices=[('p', 'priced'), ('e', 'exchange'), ('f', 'free')])
+    price = models.IntegerField()
+    currency = models.CharField(max_length=3, choices=CURRENCIES)
+    # is_free = models.BooleanField()
+    # is_exchange = models.BooleanField()
+    is_auto_renew = models.BooleanField() # repost the Ad when expires
+    # address = 
+    # phone_number
+    # email_address
+    date_posted = models.DateTimeField(_("date posted"), default=timezone.now)
