@@ -39,7 +39,7 @@ def ping_pong(request):
 @permission_classes([AllowAny])
 def register(request):
     serializer = BaseUserSerializer(data=request.data)
-    
+
     if serializer.is_valid():
         serializer.save()
         return Response(
@@ -50,6 +50,14 @@ def register(request):
         serializer.errors,
         status=status.HTTP_400_BAD_REQUEST,
     )
+
+"""
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "phone": "901558090"
+}
+"""
 
 
 @api_view(["GET"])
