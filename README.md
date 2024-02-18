@@ -11,6 +11,7 @@ better clone version of OLX online market platform
 - install python and docker
 - `pip install poetry`
 - `poetry install`
+- set up `.env` file
 
 ### Running the server
 
