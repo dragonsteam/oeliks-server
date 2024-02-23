@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from rest_framework.serializers import (
     ModelSerializer,
@@ -6,12 +5,9 @@ from rest_framework.serializers import (
     # SerializerMethodField,
 )
 
-# from djoser.serializers import (
-#     UserSerializer as BaseUserSerializer,
-#     UserCreateSerializer as BaseUserCreateSerializer,
-# )
+from .models import User, Advertisement
 
-User = get_user_model()
+# User = get_user_model()
 
 class UserSerializer(ModelSerializer):
     
@@ -45,3 +41,19 @@ class UserSerializer(ModelSerializer):
     #             instance.email_changed = True
     #             instance.save(update_fields=["is_active"])
     #     return super().update(instance, validated_data)
+
+
+
+#####################################
+
+class AdvertisementSerializer(ModelSerializer):
+    
+    class Meta:
+        model = Advertisement
+        fields = [
+            'title',
+            'about',
+            'price',
+            'currency',
+            'is_auto_renew',
+        ]

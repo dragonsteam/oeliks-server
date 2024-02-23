@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser, AbstractBaseUser
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser, UserManager
 from django.utils.translation import gettext_lazy as _
 
 from .validators import UnicodePhoneValidator, UnicodeTitleValidator
@@ -33,10 +33,12 @@ class User(AbstractBaseUser):
     language = models.CharField(max_length=5, null=True, choices=LANGUAGES)
     role = models.CharField(max_length=3, null=True, choices=USER_ROLES)
 
+    objects = UserManager()
+
     USERNAME_FIELD = "phone"
 
 
-class Ad(models.Model):
+class Advertisement(models.Model):
     title_validator = UnicodeTitleValidator()
 
     title = models.CharField(
@@ -51,8 +53,9 @@ class Ad(models.Model):
     currency = models.CharField(max_length=3, choices=CURRENCIES)
     # is_free = models.BooleanField()
     # is_exchange = models.BooleanField()
-    is_auto_renew = models.BooleanField() # repost the Ad when expires
+    is_auto_renew = models.BooleanField(default=False) # repost the Ad when expires
     # address = 
     # phone_number
     # email_address
     date_posted = models.DateTimeField(_("date posted"), default=timezone.now)
+    is_active = models.BooleanField(default=True)
