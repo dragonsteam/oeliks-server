@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-# from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password
 from rest_framework.serializers import (
     ModelSerializer,
     # Serializer,
@@ -13,7 +13,7 @@ from rest_framework.serializers import (
 
 User = get_user_model()
 
-class BaseUserSerializer(ModelSerializer):
+class UserSerializer(ModelSerializer):
     
     class Meta:
         model = User
@@ -21,6 +21,7 @@ class BaseUserSerializer(ModelSerializer):
             'first_name',
             'last_name',
             'phone',
+            'password',
             'language',
             'role',
         ]
@@ -29,6 +30,10 @@ class BaseUserSerializer(ModelSerializer):
         #     settings.LOGIN_FIELD,
         # )
         # read_only_fields = (settings.LOGIN_FIELD,)
+
+    def validate_password(self, value: str) -> str:
+        """    Hash value passed by user.    :param value: password of a user    :return: a hashed version of the password    """
+        return make_password(value)
 
     # def update(self, instance, validated_data):
     #     email_field = get_user_email_field_name(User)

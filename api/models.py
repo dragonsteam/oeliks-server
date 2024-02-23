@@ -1,14 +1,13 @@
 from django.db import models
-from django.conf import settings
 from django.utils import timezone
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser
 from django.utils.translation import gettext_lazy as _
 
 from .validators import UnicodePhoneValidator, UnicodeTitleValidator
 from .const import USER_ROLES, LANGUAGES, CURRENCIES
 
 # models here
-class User(AbstractUser):
+class User(AbstractBaseUser):
     phone_validator = UnicodePhoneValidator()
     
     # email = models.EmailField(unique=True)

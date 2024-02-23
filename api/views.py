@@ -6,8 +6,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .models import User
-from .serializers import BaseUserSerializer
-
+from .serializers import UserSerializer
 
 
 def custom404(request, exception=None):
@@ -38,7 +37,7 @@ def ping_pong(request):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def register(request):
-    serializer = BaseUserSerializer(data=request.data)
+    serializer = UserSerializer(data=request.data)
 
     if serializer.is_valid():
         serializer.save()
@@ -55,7 +54,8 @@ def register(request):
 {
     "first_name": "John",
     "last_name": "Doe",
-    "phone": "901558090"
+    "phone": "901558090",
+    "password": "1234"
 }
 """
 
