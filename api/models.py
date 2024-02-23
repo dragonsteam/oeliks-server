@@ -46,8 +46,8 @@ class Ad(models.Model):
     )
     # category
     # pictures = 
-    aboute = models.CharField(max_length=2048, blank=True)
-    price_method = models.CharField(max_length=1, choices=[('p', 'priced'), ('e', 'exchange'), ('f', 'free')])
+    about = models.CharField(max_length=2048, blank=True)
+    exchange_method = models.CharField(max_length=1, choices=[('p', 'priced'), ('e', 'exchange'), ('f', 'free')])
     price = models.IntegerField()
     currency = models.CharField(max_length=3, choices=CURRENCIES)
     # is_free = models.BooleanField()
