@@ -21,6 +21,10 @@ whitenoise = "^6.6.0"
 [tool.poetry.dev-dependencies]
 django-debug-toolbar = "^4.3.0"
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.2"
+pytest-django = "^4.8.0"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
