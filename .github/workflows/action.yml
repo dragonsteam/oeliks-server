@@ -32,10 +32,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: pull image
+      - name: git pull working directory and setup env
         run: |
           cd ${{secrets.WORK_DIR}} 
           git pull 
-          export OELIKS_SECRET_KEY=${{secrets.OELIKS_SECRET_KEY}}
+          echo "OELIKS_SECRET_KEY=${{secrets.OELIKS_SECRET_KEY}}" >> .env
+      - name: pull image and deploy
+        run: |
           docker compose -f docker-compose.prod.yml pull 
-          docker compose -f docker-compose.prod.yml up -d
+          docker compose -f docker-compose.prod.yml --env-file .env up -d
