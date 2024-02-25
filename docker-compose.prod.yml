@@ -7,6 +7,8 @@ services:
       - db
     image: ghcr.io/dragonsteam/oeliks-server:latest
     command: ./docker-entrypoint.sh
+    env_file:
+      - ./.env
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.prod
       # - DB_URL=mysql://root:pwd@localhost/oeliks_db

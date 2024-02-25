@@ -37,6 +37,4 @@ jobs:
           cd ${{secrets.WORK_DIR}}
           git pull
           docker compose -f docker-compose.prod.yml pull 
-          docker compose -f docker-compose.prod.yml --env-file ${{secrets.WORK_DIR}}/.env up -d
-
-# echo "OELIKS_SECRET_KEY=${{secrets.OELIKS_SECRET_KEY}}" >> .env
+          docker compose -f docker-compose.prod.yml  up -d
