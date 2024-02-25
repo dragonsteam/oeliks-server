@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   api:
@@ -6,9 +6,9 @@ services:
       - db
     build: .
     # container_name: oeliks-server
-    command: ./docker-entrypoint.sh
+    command: ./docker-entrypoint.sh dev
     environment:
-      - DJANGO_SETTINGS_MODULE=core.settings
+      - DJANGO_SETTINGS_MODULE=core.settings.dev
       # - DB_URL=mysql://root:pwd@localhost/oeliks_db
     ports:
       - 8000:8000

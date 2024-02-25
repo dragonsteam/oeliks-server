@@ -35,14 +35,7 @@ def get_list(text):
 #     return None
 
 
-# setting up some constants
-DEBUG = True
-# ALLOWED_HOSTS = ["localhost"]
-CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOWED_ORIGINS = ['0.0.0.0']
-BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.getenv("SECRET_KEY", "INSECURE_abc123!@#")
-DB_URL = os.getenv("DB_URL")
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 # Application definition
@@ -112,27 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Database
-DATABASES = {
-    # "default": {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": BASE_DIR / "db.sqlite3",
-        
-    #     # "ENGINE": "django.db.backends.mysql",
-    #     # "HOST": "localhost",
-    #     # "NAME": MYSQL_DATABASE_NAME,
-    #     # "USER": MYSQL_USER,
-    #     # "PASSWORD": MYSQL_PASSWORD,
-    # }
-    "default": dj_database_url.config(
-        # mysql://USER:PASSWORD@HOST:PORT/NAME
-        default="mysql://root:pwd@db/oeliks_db",
-        # default=DB_URL,
-        conn_max_age=600,
-        # conn_health_checks=True,
-    )
-}
-
 
 # Internationalization
 
@@ -144,11 +116,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = "static/"
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -178,16 +145,6 @@ AUTH_USER_MODEL = "api.User"
 #         'current_user': 'core.serializers.UserSerializer',
 #     }
 # }
-
-# cors settings
-# CORS_ALLOWED_ORIGINS  = [
-#     "http://localhost:5173", # react host
-#     "http://127.0.0.1:5173", # react host
-# ]
-# CORS_ALLOW_ALL_ORIGINS = True
-
-# debug toolbar settings
-INTERNAL_IPS = ["127.0.0.1"]
 
 # REDIS_BASE_URL = 'redis://redis:6379'
 REDIS_BASE_URL = "redis://localhost:6379"
@@ -253,13 +210,3 @@ LOGGING = {
         }
     },
 }
-
-# HTTPS settings
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-# SECURE_SSL_REDIRECT = True
-
-# HSTS settings
-# SECURE_HSTS_SECONDS = 31536000 # 1 year
-# SECURE_HSTS_PRELOAD = True
-# SECURE_HSTS_INCLUDE_SUBDOMAINS = True

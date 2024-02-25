@@ -11,4 +11,11 @@ poetry run python manage.py migrate
 
 echo ">>> Starting server..."
 # poetry run python manage.py runserver 0.0.0.0:8000
-poetry run gunicorn --reload core.wsgi -b 0.0.0.0:8000
+
+if [ "$1" = "dev" ]; then
+    echo ">> Running as developement server"
+    poetry run gunicorn --reload core.wsgi -b 0.0.0.0:8000
+else
+    echo ">> Running as production server"
+    poetry run gunicorn core.wsgi -b 0.0.0.0:8000
+fi

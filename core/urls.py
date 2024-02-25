@@ -8,6 +8,7 @@ handler404 = custom404
 
 urlpatterns = [
     path("__debug__/", include("debug_toolbar.urls")),
+    
     path("", TemplateView.as_view(template_name="index.html")),
     path("api/", include("api.urls")),
     path("admin/", admin.site.urls),

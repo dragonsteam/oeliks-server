@@ -3,6 +3,7 @@ celerybeat-schedule.dat
 celerybeat-schedule.dir
 
 # static/*
+public/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
