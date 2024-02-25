@@ -33,4 +33,9 @@ jobs:
 
     steps:
       - name: pull image
-        run: cd ${{secrets.WORK_DIR}} && git pull && docker compose -f docker-compose.prod.yml pull && docker compose -f docker-compose.prod.yml up -d
+        run: |
+          cd ${{secrets.WORK_DIR}} 
+          git pull 
+          export OELIKS_SECRET_KEY=${{secrets.OELIKS_SECRET_KEY}}
+          docker compose -f docker-compose.prod.yml pull 
+          docker compose -f docker-compose.prod.yml up -d
