@@ -34,9 +34,9 @@ jobs:
     steps:
       - name: pull image and deploy
         run: |
-          cd ${{secrets.WORK_DIR}} 
-          pwd
-          git pull 
-          echo "OELIKS_SECRET_KEY=${{secrets.OELIKS_SECRET_KEY}}" >> .env
+          cd ${{secrets.WORK_DIR}}
+          git pull
           docker compose -f docker-compose.prod.yml pull 
           docker compose -f docker-compose.prod.yml --env-file .env up -d
+
+# echo "OELIKS_SECRET_KEY=${{secrets.OELIKS_SECRET_KEY}}" >> .env
