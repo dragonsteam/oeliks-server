@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  server:
+    container_name: oeliks-server
+    depends_on:
+      - db
+    image: ghcr.io/dragonsteam/oeliks-server:latest
+    command: ./docker-entrypoint.sh
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+      # - DB_URL=mysql://root:pwd@localhost/oeliks_db
+    ports:
+      - 8000:8000
+
+  db:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    # restart: always
+    environment:
+      - MYSQL_DATABASE=oeliks_db
+      - MYSQL_ROOT_PASSWORD=pwd
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+volumes:
+  mysqldata:
