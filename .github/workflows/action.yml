@@ -9,6 +9,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: dragonsteam/oeliks-server:latest
+  OELIKS_WORKDIR: ~/oeliks-server
 
 jobs:
   publish:
@@ -34,7 +35,7 @@ jobs:
     steps:
       - name: pull image and deploy
         run: |
-          cd ${{secrets.WORK_DIR}}
+          cd ${{env.OELIKS_WORKDIR}}
           git pull
           docker compose -f docker-compose.prod.yml pull 
           docker compose -f docker-compose.prod.yml up -d
