@@ -1,6 +1,15 @@
 version: "3.8"
 
 services:
+  web:
+    container_name: oeliks-web
+    depends_on:
+      - server
+    image: ghcr.io/dragonsteam/oeliks-front:latest
+    command: npm run build
+    volumes:
+      - public:/app/dist
+
   server:
     container_name: oeliks-server
     depends_on:
