@@ -6,9 +6,9 @@ services:
     depends_on:
       - server
     image: ghcr.io/dragonsteam/oeliks-front:latest
-    command: npm run build
-    volumes:
-      - public:/app/dist
+    command: nginx -g daemon off
+    ports:
+      - 80:80
 
   server:
     container_name: oeliks-server
@@ -23,8 +23,8 @@ services:
       # - DB_URL=mysql://root:pwd@localhost/oeliks_db
     ports:
       - 8000:8000
-    volumes:
-      - public:/app/public
+    # volumes:
+    #   - public:/app/public
 
   db:
     image: mysql:8.0
@@ -39,4 +39,3 @@ services:
 
 volumes:
   mysqldata:
-  public:
