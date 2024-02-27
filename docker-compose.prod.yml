@@ -14,6 +14,8 @@ services:
       # - DB_URL=mysql://root:pwd@localhost/oeliks_db
     ports:
       - 8000:8000
+    volumes:
+      - public:/app/public
 
   db:
     image: mysql:8.0
@@ -28,3 +30,4 @@ services:
 
 volumes:
   mysqldata:
+  public:
