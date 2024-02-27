@@ -6,7 +6,7 @@ services:
     depends_on:
       - server
     image: ghcr.io/dragonsteam/oeliks-front:latest
-    command: nginx -g daemon off
+    # command: nginx -g daemon off
     ports:
       - 80:80
 
