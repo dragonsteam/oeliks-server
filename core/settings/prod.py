@@ -2,7 +2,6 @@ from .common import *
 
 DEBUG = False
 ALLOWED_HOSTS = ["django"]
-# CORS_ALLOWED_ORIGINS = ['0.0.0.0']
 SECRET_KEY = os.getenv("OELIKS_SECRET_KEY")
 
 # Database

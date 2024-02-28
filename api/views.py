@@ -1,12 +1,14 @@
 # from django.core.cache import cache
+import logging
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.views import APIView
 
-from .models import User, Advertisement
-from .serializers import UserSerializer, AdvertisementSerializer
+from .models import User, Advertisement, AdImage
+from .serializers import UserSerializer, AdvertisementSerializer, AdImageSerializer
 
 
 def custom404(request, exception=None):
@@ -95,3 +97,47 @@ def advertisements(request):
     "is_auto_renew": true
 }
 """
+
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
+def ad_images(request, id):
+    if request.method == "GET":
+        ads = AdImage.objects.all()
+        serializer = AdImageSerializer(ads, many=True)
+        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+    
+    if request.method == "POST":
+        serializer = AdImageSerializer(data=request.data, context={"ad_id": id})
+        if serializer.is_valid():
+            # you can access the file like this from serializer
+            # uploaded_file = serializer.validated_data["file"]
+            serializer.save()
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+
+# class FileUploadAPIView(APIView):
+#     # parser_classes = (MultiPartParser, FormParser)
+#     serializer_class = AdImageSerializer
+    
+#     def post(self, request, *args, **kwargs):
+#         serializer = self.serializer_class(data=request.data, context={"ad_id": 1})
+#         if serializer.is_valid():
+#             # you can access the file like this from serializer
+#             # uploaded_file = serializer.validated_data["file"]
+#             serializer.save()
+#             return Response(
+#                 serializer.data,
+#                 status=status.HTTP_201_CREATED
+#             )
+        
+#         return Response(
+#             serializer.errors,
+#             status=status.HTTP_400_BAD_REQUEST
+#         )

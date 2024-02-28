@@ -1,7 +1,7 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .views import ping_pong, register, advertisements
+from .views import ping_pong, register, advertisements, ad_images
 
 urlpatterns = [
     path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
@@ -11,5 +11,6 @@ urlpatterns = [
 
     path("register/", register),
     path("advertisements/", advertisements),
-    # path("/users", ),
+    path("advertisements/<int:id>/images", ad_images),
+    # path("advertisements/<int:id>/images", FileUploadAPIView.as_view()),
 ]

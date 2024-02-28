@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser, UserManager
 from django.utils.translation import gettext_lazy as _
 
-from .validators import UnicodePhoneValidator, UnicodeTitleValidator
+from .validators import UnicodePhoneValidator, UnicodeTitleValidator, validate_file_size
 from .const import USER_ROLES, LANGUAGES, CURRENCIES
 
 # models here
@@ -59,3 +59,8 @@ class Advertisement(models.Model):
     # email_address
     date_posted = models.DateTimeField(_("date posted"), default=timezone.now)
     is_active = models.BooleanField(default=True)
+
+
+class AdImage(models.Model):
+    ad = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to='ad/images', validators=[validate_file_size])

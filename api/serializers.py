@@ -1,3 +1,4 @@
+import logging
 from django.contrib.auth.hashers import make_password
 from rest_framework.serializers import (
     ModelSerializer,
@@ -5,7 +6,7 @@ from rest_framework.serializers import (
     # SerializerMethodField,
 )
 
-from .models import User, Advertisement
+from .models import User, Advertisement, AdImage
 
 # User = get_user_model()
 
@@ -46,11 +47,22 @@ class UserSerializer(ModelSerializer):
 
 #####################################
 
+class AdImageSerializer(ModelSerializer):
+    class Meta:
+        model = AdImage
+        fields = ['id', 'image']
+
+    def create(self, validated_data):
+        ad_id = self.context['ad_id']
+        return AdImage.objects.create(ad_id=ad_id, **validated_data)
+
+
 class AdvertisementSerializer(ModelSerializer):
-    
+    # image = AdImageSerializer()
     class Meta:
         model = Advertisement
         fields = [
+            # 'image',
             'title',
             'about',
             'price',

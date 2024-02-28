@@ -11,8 +11,8 @@ echo ">>> Starting server..."
 
 if [ "$1" = "dev" ]; then
     echo ">> Running as developement server"
-    poetry run gunicorn --reload core.wsgi -w 3 -b 0.0.0.0:8000
-    # poetry run python manage.py runserver 0.0.0.0:8000
+    # poetry run gunicorn --reload core.wsgi -w 3 -b 0.0.0.0:8000
+    poetry run python manage.py runserver 0.0.0.0:8000
 else
     echo ">> Collecting static files..."
     poetry run python manage.py collectstatic --noinput
