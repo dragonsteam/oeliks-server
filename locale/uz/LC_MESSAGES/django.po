@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-03-01 17:23+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+#: api/models.py:18
+msgid "username"
+msgstr ""
+
+#: api/models.py:26
+msgid "Required. 9 characters. numbers only."
+msgstr ""
+
+#: api/models.py:30
+msgid "A user with that phone number already exists."
+msgstr ""
+
+#: api/models.py:60
+msgid "date posted"
+msgstr ""
+
+#: api/validators.py:11
+msgid "Enter a valid phone number. This value may contain only 9 numbers."
+msgstr ""
+
+#: api/validators.py:19
+msgid "Enter a valid text. This value cannot be less than 16 characters."
+msgstr ""
+
+#: api/views.py:37
+msgid "hello"
+msgstr "salom"
+
+#: core/settings/common.py:44
+msgid "English"
+msgstr ""
+
+#: core/settings/common.py:45
+msgid "Uzbek"
+msgstr ""

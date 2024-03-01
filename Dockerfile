@@ -4,7 +4,7 @@ WORKDIR /app
 
 # Required to install mysqlclient with Pip
 RUN apt-get update \
-  && apt-get install python3-dev default-libmysqlclient-dev gcc dos2unix -y
+  && apt-get install python3-dev default-libmysqlclient-dev gcc gettext dos2unix -y
 
 # Install pipenv
 RUN pip install --upgrade pip 

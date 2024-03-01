@@ -1,6 +1,8 @@
 # from django.core.cache import cache
 import logging
 from django.http import JsonResponse
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import get_language, activate, gettext
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -28,12 +30,22 @@ def custom404(request, exception=None):
 #         return type in access[0][source]
 #     return False
 
+def translate(text, language):
+    curr_language = get_language()
+    try:
+        activate(language)
+        text = gettext(text)
+    finally:
+        activate(curr_language)
+    return text
+
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def ping_pong(request):
-    # update_trucks()
-    return Response("pong", status=status.HTTP_200_OK)
+    text = 'hello'
+    trans = translate(text, language='uz')
+    return Response("pong " + trans, status=status.HTTP_200_OK)
 
 #
 @api_view(["POST"])
