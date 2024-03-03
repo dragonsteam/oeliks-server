@@ -1,16 +1,12 @@
 import logging
 from django.contrib.auth.hashers import make_password
-from rest_framework.serializers import (
-    ModelSerializer,
-    # Serializer,
-    # SerializerMethodField,
-)
+from rest_framework import serializers
 
-from .models import User, Advertisement, AdImage
+from .models import User, TeleAuth, Advertisement, AdImage
 
 # User = get_user_model()
 
-class UserSerializer(ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
@@ -47,7 +43,17 @@ class UserSerializer(ModelSerializer):
 
 #####################################
 
-class AdImageSerializer(ModelSerializer):
+class TeleAuthSerializer(serializers.ModelSerializer):
+    hash = serializers.CharField()
+
+    class Meta:
+        model = TeleAuth
+        fields = ['tele_id', 'photo_url']
+
+#####################################
+
+
+class AdImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdImage
         fields = ['id', 'image']
@@ -57,7 +63,7 @@ class AdImageSerializer(ModelSerializer):
         return AdImage.objects.create(ad_id=ad_id, **validated_data)
 
 
-class AdvertisementSerializer(ModelSerializer):
+class AdvertisementSerializer(serializers.ModelSerializer):
     # image = AdImageSerializer()
     class Meta:
         model = Advertisement

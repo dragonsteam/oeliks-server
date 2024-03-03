@@ -53,6 +53,11 @@ def ping_pong(request):
 def register(request):
     serializer = UserSerializer(data=request.data)
 
+    return Response(
+        {'detail': _('please use telegram to register')},
+        status=status.HTTP_400_BAD_REQUEST,
+    )
+
     if serializer.is_valid():
         serializer.save()
         return Response(
@@ -72,6 +77,12 @@ def register(request):
     "password": "1234"
 }
 """
+
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def register_telegram(request):
+    pass
+
 
 
 @api_view(["GET"])

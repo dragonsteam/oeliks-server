@@ -10,6 +10,7 @@ urlpatterns = [
     path("ping/", ping_pong),
 
     path("register/", register),
+    path("register/telegram/", register),
     path("advertisements/", advertisements),
     path("advertisements/<int:id>/images", ad_images),
     # path("advertisements/<int:id>/images", FileUploadAPIView.as_view()),
