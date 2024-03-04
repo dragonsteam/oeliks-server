@@ -8,9 +8,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, Advertisement, AdImage
-from .serializers import UserSerializer, AdvertisementSerializer, AdImageSerializer
+from .serializers import UserSerializer, TelegramUserSerializer, AdvertisementSerializer, AdImageSerializer
 
 
 def custom404(request, exception=None):
@@ -80,9 +81,36 @@ def register(request):
 
 @api_view(["POST"])
 @permission_classes([AllowAny])
-def register_telegram(request):
-    pass
+def telegram_auth(request):
+    serializer = TelegramUserSerializer(data=request.data)
 
+    if serializer.is_valid():
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
+        return Response(
+            {
+                "refresh": str(refresh),
+                "access": str(refresh.access_token)
+            },
+            status=status.HTTP_200_OK,
+        )
+    return Response(
+        serializer.errors,
+        status=status.HTTP_400_BAD_REQUEST,
+    )
+
+"""
+{
+  "id": 992519627,
+  "hash": "faa98f1c8c6c25d0db9b27392cf24e1fa2f9822194024bd2d786a594765cefa9",
+  "first_name": "Nick",
+  "last_name": "Wild",
+  "username": "NickPhilomath",
+  "auth_date": 1709487049,
+  "photo_url":
+    "https://t.me/i/userpic/320/Sn5-VT8K0XDt-4JjI5sLB_gv3u0Ew5R0ad04INgSfKo.jpg"
+}
+"""
 
 
 @api_view(["GET"])

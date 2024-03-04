@@ -2,7 +2,7 @@ import logging
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from .models import User, TeleAuth, Advertisement, AdImage
+from .models import User, Advertisement, AdImage
 
 # User = get_user_model()
 
@@ -43,12 +43,27 @@ class UserSerializer(serializers.ModelSerializer):
 
 #####################################
 
-class TeleAuthSerializer(serializers.ModelSerializer):
+class TelegramUserSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
     hash = serializers.CharField()
 
     class Meta:
-        model = TeleAuth
-        fields = ['tele_id', 'photo_url']
+        model = User
+        fields = ['id', 'hash', 'first_name', 'last_name']
+
+    def create(self, validated_data):
+        tg_id = validated_data.pop('id')
+        tg_hash = validated_data.pop('hash')
+        try:
+            return User.objects.get(tg_id=tg_id)
+        except User.DoesNotExist:
+            new_user = User.objects.create(tg_id=tg_id, **validated_data)
+
+        # logging.warn("shit data", self)
+        return User.objects.all()[0]
+    
+    def check_hash():
+        return True
 
 #####################################
 

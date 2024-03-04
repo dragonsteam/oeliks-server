@@ -7,7 +7,7 @@ echo ">>> Apply database migrations"
 poetry run python manage.py migrate
 
 echo ">>> Compile messages..."
-poetry run python manage.py compilemessages
+poetry run python manage.py compilemessages > logs/compilemessages.log
 
 echo ">>> Starting server..."
 # poetry run python manage.py runserver 0.0.0.0:8000

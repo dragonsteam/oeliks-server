@@ -33,6 +33,8 @@ class User(AbstractBaseUser):
     language = models.CharField(max_length=5, null=True, choices=LANGUAGES)
     role = models.CharField(max_length=3, null=True, choices=USER_ROLES)
 
+    tg_id = models.BigIntegerField(null=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = "phone"
@@ -65,9 +67,4 @@ class AdImage(models.Model):
     ad = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='ad/images', validators=[validate_file_size])
 
-
-class TeleAuth(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teleauth')
-    tele_id = models.BigIntegerField()
-    photo_url = models.CharField(max_length=255)
     
