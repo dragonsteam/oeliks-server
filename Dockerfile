@@ -1,10 +1,10 @@
-FROM python:3.10
+FROM python:3.10.13-slim-bullseye
 
 WORKDIR /app
 
 # Required to install mysqlclient with Pip
 RUN apt-get update \
-  && apt-get install python3-dev default-libmysqlclient-dev gcc gettext dos2unix -y
+  && apt-get install python3-dev default-libmysqlclient-dev build-essential pkg-config gettext -y
 
 # Install pipenv
 RUN pip install --upgrade pip 
