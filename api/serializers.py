@@ -88,5 +88,5 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             'about',
             'price',
             'currency',
-            'is_auto_renew',
+            'date_posted',
         ]
