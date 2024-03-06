@@ -138,7 +138,7 @@ def advertisements(request):
         return Response(
             serializer.errors, status=status.HTTP_400_BAD_REQUEST
         )
-    
+ 
 """
 {
     "title": "Ford Mustang 1969",
@@ -148,6 +148,14 @@ def advertisements(request):
     "is_auto_renew": true
 }
 """
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def vip_ads(request):
+    ads = Advertisement.objects.filter(is_active=True)
+    serializer = AdvertisementSerializer(ads, many=True)
+    return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
