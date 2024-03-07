@@ -74,7 +74,7 @@ class AdImageSerializer(serializers.ModelSerializer):
         fields = ['id', 'image']
 
     def create(self, validated_data):
-        ad_id = self.context['ad_id']
+        ad_id = self.context['ad_id', None]
         return AdImage.objects.create(ad_id=ad_id, **validated_data)
 
 

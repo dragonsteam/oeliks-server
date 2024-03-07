@@ -157,7 +157,7 @@ def vip_ads(request):
     return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
 
-@api_view(["GET", "POST"])
+@api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def ad_images(request, id):
     if request.method == "GET":
@@ -165,12 +165,18 @@ def ad_images(request, id):
         serializer = AdImageSerializer(ads, many=True)
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
     
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def new_image(request):
     if request.method == "POST":
-        serializer = AdImageSerializer(data=request.data, context={"ad_id": id})
+        serializer = AdImageSerializer(data=request.data)
         if serializer.is_valid():
             # you can access the file like this from serializer
             # uploaded_file = serializer.validated_data["file"]
-            serializer.save()
+            image = serializer.save()
+            logging.warn("********")
+            logging.warn(image)
             return Response(
                 serializer.data,
                 status=status.HTTP_201_CREATED
@@ -179,7 +185,6 @@ def ad_images(request, id):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-    
 
 # class FileUploadAPIView(APIView):
 #     # parser_classes = (MultiPartParser, FormParser)

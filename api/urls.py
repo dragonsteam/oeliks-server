@@ -14,5 +14,6 @@ urlpatterns = [
     path("advertisements/", advertisements),
     path("advertisements/vip", vip_ads),
     path("advertisements/<int:id>/images", ad_images),
+    path("advertisements/images/new", vip_ads),
     # path("advertisements/<int:id>/images", FileUploadAPIView.as_view()),
 ]
