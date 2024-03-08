@@ -71,11 +71,11 @@ class TelegramUserSerializer(serializers.ModelSerializer):
 class AdImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdImage
-        fields = ['id', 'image']
+        fields = ['id', 'ad', 'image']
 
-    def create(self, validated_data):
-        ad_id = self.context['ad_id', None]
-        return AdImage.objects.create(ad_id=ad_id, **validated_data)
+    # def create(self, validated_data):
+    #     ad_id = self.context['ad_id', None]
+    #     return AdImage.objects.create(ad_id=ad_id, **validated_data)
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):

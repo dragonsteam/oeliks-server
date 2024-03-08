@@ -166,42 +166,25 @@ def ad_images(request, id):
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
     
 
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def new_image(request):
-    if request.method == "POST":
-        serializer = AdImageSerializer(data=request.data)
+class NewAdImageUploadAPIView(APIView):
+    # parser_classes = (MultiPartParser, FormParser)
+    serializer_class = AdImageSerializer
+    permission_classes = [AllowAny]
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        logging.info("***********")
+        logging.info(request.data)
         if serializer.is_valid():
             # you can access the file like this from serializer
             # uploaded_file = serializer.validated_data["file"]
-            image = serializer.save()
-            logging.warn("********")
-            logging.warn(image)
+            serializer.save()
             return Response(
                 serializer.data,
                 status=status.HTTP_201_CREATED
             )
+        
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST
         )
-
-# class FileUploadAPIView(APIView):
-#     # parser_classes = (MultiPartParser, FormParser)
-#     serializer_class = AdImageSerializer
-    
-#     def post(self, request, *args, **kwargs):
-#         serializer = self.serializer_class(data=request.data, context={"ad_id": 1})
-#         if serializer.is_valid():
-#             # you can access the file like this from serializer
-#             # uploaded_file = serializer.validated_data["file"]
-#             serializer.save()
-#             return Response(
-#                 serializer.data,
-#                 status=status.HTTP_201_CREATED
-#             )
-        
-#         return Response(
-#             serializer.errors,
-#             status=status.HTTP_400_BAD_REQUEST
-#         )
