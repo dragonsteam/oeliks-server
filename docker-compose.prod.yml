@@ -9,6 +9,8 @@ services:
     # command: nginx -g daemon off
     ports:
       - 80:80
+    volumes:
+      - media:/usr/share/nginx/media
 
   server:
     container_name: oeliks-server
