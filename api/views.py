@@ -156,7 +156,9 @@ def advertisements(request):
 @permission_classes([AllowAny])
 def vip_ads(request):
     # ads = Advertisement.objects.filter(is_active=True)
-    ads = Advertisement.objects.prefetch_related('images').filter(is_active=True)
+    ads = Advertisement.objects.prefetch_related('ad_images').filter(is_active=True)
+    # logging.info("****************")
+    # logging.info(ads.)
     serializer = AdvertisementSerializer(ads, many=True)
     return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 

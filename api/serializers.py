@@ -97,8 +97,6 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         # read_only_fields = ['pictures']
 
     def get_pictures(self, obj):
-        pics = AdImage.objects.filter(ad = obj)
-        logging.info("&&&&&&&&&&&&")
-        logging.info(pics)
+        pics = obj.ad_images.all()
         pics_serializer = AdImageSerializer(pics, many=True)
         return pics_serializer.data

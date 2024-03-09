@@ -61,7 +61,7 @@ class Advertisement(models.Model):
 
 
 class AdImage(models.Model):
-    ad = models.ForeignKey(Advertisement, null=True, on_delete=models.SET_NULL, related_name='images')
+    ad = models.ForeignKey(Advertisement, null=True, on_delete=models.SET_NULL, related_name='ad_images')
     image = models.ImageField(upload_to='ad/images', validators=[validate_file_size])
 
     
