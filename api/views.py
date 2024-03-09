@@ -128,6 +128,9 @@ def advertisements(request):
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
     if request.method == "POST":
+        logging.info("**************")
+        logging.info(request.data)
+
         serializer = AdvertisementSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -152,7 +155,8 @@ def advertisements(request):
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def vip_ads(request):
-    ads = Advertisement.objects.filter(is_active=True)
+    # ads = Advertisement.objects.filter(is_active=True)
+    ads = Advertisement.objects.prefetch_related('images').filter(is_active=True)
     serializer = AdvertisementSerializer(ads, many=True)
     return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
@@ -169,12 +173,10 @@ def ad_images(request, id):
 class NewAdImageUploadAPIView(APIView):
     # parser_classes = (MultiPartParser, FormParser)
     serializer_class = AdImageSerializer
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
-        logging.info("***********")
-        logging.info(request.data)
         if serializer.is_valid():
             # you can access the file like this from serializer
             # uploaded_file = serializer.validated_data["file"]

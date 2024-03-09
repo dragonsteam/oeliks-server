@@ -71,7 +71,7 @@ class TelegramUserSerializer(serializers.ModelSerializer):
 class AdImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdImage
-        fields = ['id', 'ad', 'image']
+        fields = ['id', 'image']
 
     # def create(self, validated_data):
     #     ad_id = self.context['ad_id', None]
@@ -79,14 +79,26 @@ class AdImageSerializer(serializers.ModelSerializer):
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
-    # image = AdImageSerializer()
+    pictures = serializers.SerializerMethodField()
+    # pictures = AdImageSerializer(many=True, read_only=True)
+
     class Meta:
         model = Advertisement
         fields = [
-            # 'image',
+            'id',
             'title',
             'about',
             'price',
             'currency',
             'date_posted',
+            'pictures',
         ]
+
+        # read_only_fields = ['pictures']
+
+    def get_pictures(self, obj):
+        pics = AdImage.objects.filter(ad = obj)
+        logging.info("&&&&&&&&&&&&")
+        logging.info(pics)
+        pics_serializer = AdImageSerializer(pics, many=True)
+        return pics_serializer.data

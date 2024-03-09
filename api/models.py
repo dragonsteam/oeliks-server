@@ -48,13 +48,10 @@ class Advertisement(models.Model):
         validators=[title_validator],
     )
     # category
-    # pictures = 
     about = models.CharField(max_length=2048, blank=True)
     exchange_method = models.CharField(max_length=1, choices=[('p', 'priced'), ('e', 'exchange'), ('f', 'free')])
     price = models.IntegerField()
     currency = models.CharField(max_length=3, choices=CURRENCIES)
-    # is_free = models.BooleanField()
-    # is_exchange = models.BooleanField()
     is_auto_renew = models.BooleanField(default=False) # repost the Ad when expires
     # address = 
     # phone_number
