@@ -51,12 +51,12 @@ class TelegramUserSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
     hash = serializers.CharField()
     auth_date = serializers.IntegerField()
-    # username = serializers.CharField()
-    # photo_url = serializers.CharField()
+    username = serializers.CharField()
+    photo_url = serializers.CharField()
 
     class Meta:
         model = User
-        fields = ['id', 'hash', 'auth_date', 'first_name', 'last_name']
+        fields = ['id', 'hash', 'auth_date', 'username', 'photo_url', 'first_name', 'last_name']
 
     def to_internal_value(self, data):
 
