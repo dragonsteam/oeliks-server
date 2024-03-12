@@ -62,8 +62,10 @@ class TelegramUserSerializer(serializers.ModelSerializer):
         # logging.warn("shit data", self)
         return User.objects.all()[0]
     
-    def check_hash():
-        return True
+    def validate_hash(self, value):
+        # if 'django' not in value.lower():
+        #     raise serializers.ValidationError("Blog post is not about Django")
+        return value
 
 #####################################
 
@@ -93,10 +95,27 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             'date_posted',
             'pictures',
         ]
-
         # read_only_fields = ['pictures']
 
     def get_pictures(self, obj):
         pics = obj.ad_images.all()
         pics_serializer = AdImageSerializer(pics, many=True)
         return pics_serializer.data
+    
+    def to_internal_value(self, data):
+        pictures_value = data.get('pictures', [])
+        validated_pictures_value = self.validate_pictures(pictures_value)
+        # data['pictures'] = validated_pictures_value
+        self.context['pictures'] = validated_pictures_value
+        return super().to_internal_value(data)
+
+    def validate_pictures(self, value):
+        # if not value:
+        #     raise serializers.ValidationError("pictures must container at leaste 1 value")
+        return value
+    
+    def create(self, validated_data):
+        new_ad = Advertisement.objects.create(**validated_data)
+        # point selected pictures to this ad
+        AdImage.objects.filter(id__in=self.context.get('pictures', []), ad__isnull=True).update(ad=new_ad)
+        return new_ad

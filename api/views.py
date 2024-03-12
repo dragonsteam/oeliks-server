@@ -55,7 +55,7 @@ def register(request):
     serializer = UserSerializer(data=request.data)
 
     return Response(
-        {'detail': _('please use telegram to register')},
+        {'detail': _('regular registration has been disabled by developers, please use Telegram to proceed')},
         status=status.HTTP_400_BAD_REQUEST,
     )
 
@@ -120,7 +120,7 @@ def users(request):
 
 
 @api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny]) ###
 def advertisements(request):
     if request.method == "GET":
         ads = Advertisement.objects.filter(is_active=True)
@@ -155,10 +155,7 @@ def advertisements(request):
 @api_view(["GET"])
 @permission_classes([AllowAny])
 def vip_ads(request):
-    # ads = Advertisement.objects.filter(is_active=True)
     ads = Advertisement.objects.prefetch_related('ad_images').filter(is_active=True)
-    # logging.info("****************")
-    # logging.info(ads.)
     serializer = AdvertisementSerializer(ads, many=True)
     return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
