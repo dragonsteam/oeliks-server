@@ -3,6 +3,7 @@ import dj_database_url
 from pathlib import Path
 from datetime import timedelta
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import gettext_lazy as _
 
 load_dotenv()
@@ -35,6 +36,10 @@ def get_list(text):
 #         return value
 #     return None
 
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", None)
+if not TELEGRAM_BOT_TOKEN:
+    raise ImproperlyConfigured("TELEGRAM_BOT_TOKEN is empty, please check environment variables.")
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -60,6 +65,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "debug_toolbar",
+    "django_telegram_login",
     "rest_framework",
     "rest_framework_simplejwt",
     "corsheaders",

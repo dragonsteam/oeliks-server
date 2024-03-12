@@ -8,6 +8,11 @@ SECRET_KEY = os.getenv("SECRET_KEY", "INSECURE_abc123!@#")
 # ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 ALLOWED_HOSTS = ["*"]
 
+# INSTALLED_APPS += [
+#     "debug_toolbar",
+# ]
+
+
 # debug toolbar settings
 INTERNAL_IPS = ["*"]
 DEBUG_TOOLBAR_CONFIG = {

@@ -1,9 +1,13 @@
-import logging
+from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
+# from django_telegram_login.authentication import verify_telegram_authentication
+# from django_telegram_login.errors import NotTelegramDataError, TelegramDataIsOutdatedError 
+from .auth import verify_telegram_authentication, NotTelegramDataError, TelegramDataIsOutdatedError
 from .models import User, Advertisement, AdImage
 
+from core.utility import log
 # User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -46,10 +50,30 @@ class UserSerializer(serializers.ModelSerializer):
 class TelegramUserSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField()
     hash = serializers.CharField()
+    auth_date = serializers.IntegerField()
+    # username = serializers.CharField()
+    # photo_url = serializers.CharField()
 
     class Meta:
         model = User
-        fields = ['id', 'hash', 'first_name', 'last_name']
+        fields = ['id', 'hash', 'auth_date', 'first_name', 'last_name']
+
+    def to_internal_value(self, data):
+
+        data = super().to_internal_value(data)
+        # check authorization
+        try:
+            check_result = verify_telegram_authentication(settings.TELEGRAM_BOT_TOKEN, request_data=data)
+            log('@ result')
+            log(check_result)
+        except TelegramDataIsOutdatedError:
+            log('* outdated')
+            raise serializers.ValidationError({"name": "hash is outdated"})
+        except NotTelegramDataError:
+            log('* invalid data')
+            raise serializers.ValidationError({"name": "hash is invalid"})
+
+        return data
 
     def create(self, validated_data):
         tg_id = validated_data.pop('id')
@@ -57,15 +81,7 @@ class TelegramUserSerializer(serializers.ModelSerializer):
         try:
             return User.objects.get(tg_id=tg_id)
         except User.DoesNotExist:
-            new_user = User.objects.create(tg_id=tg_id, **validated_data)
-
-        # logging.warn("shit data", self)
-        return User.objects.all()[0]
-    
-    def validate_hash(self, value):
-        # if 'django' not in value.lower():
-        #     raise serializers.ValidationError("Blog post is not about Django")
-        return value
+            return User.objects.create(tg_id=tg_id, **validated_data)
 
 #####################################
 
@@ -74,10 +90,6 @@ class AdImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdImage
         fields = ['id', 'image']
-
-    # def create(self, validated_data):
-    #     ad_id = self.context['ad_id', None]
-    #     return AdImage.objects.create(ad_id=ad_id, **validated_data)
 
 
 class AdvertisementSerializer(serializers.ModelSerializer):
