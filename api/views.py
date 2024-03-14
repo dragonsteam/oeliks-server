@@ -1,5 +1,4 @@
 # from django.core.cache import cache
-import logging
 from django.http import JsonResponse
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import get_language, activate, gettext
@@ -13,6 +12,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Advertisement, AdImage
 from .serializers import UserSerializer, TelegramUserSerializer, AdvertisementSerializer, AdImageSerializer
 
+from core.utility import log
 
 def custom404(request, exception=None):
     return JsonResponse(
@@ -54,10 +54,13 @@ def ping_pong(request):
 def register(request):
     serializer = UserSerializer(data=request.data)
 
-    return Response(
-        {'detail': _('regular registration has been disabled by developers, please use Telegram to proceed')},
-        status=status.HTTP_400_BAD_REQUEST,
-    )
+    log("request.data***")
+    log(request.data)
+
+    # return Response(
+    #     {'detail': _('regular registration has been disabled by developers, please use Telegram to proceed')},
+    #     status=status.HTTP_400_BAD_REQUEST,
+    # )
 
     if serializer.is_valid():
         serializer.save()
@@ -128,9 +131,6 @@ def advertisements(request):
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
     if request.method == "POST":
-        logging.info("**************")
-        logging.info(request.data)
-
         serializer = AdvertisementSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
