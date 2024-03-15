@@ -9,8 +9,8 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User, Advertisement, AdImage
-from .serializers import UserSerializer, TelegramUserSerializer, AdvertisementSerializer, AdImageSerializer
+from .models import User, Advertisement, AdImage, Section
+from .serializers import UserSerializer, TelegramUserSerializer, AdvertisementSerializer, AdImageSerializer, SectionSerializer
 
 from core.utility import log
 
@@ -120,6 +120,14 @@ def telegram_auth(request):
 @permission_classes([AllowAny])
 def users(request):
     pass
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def sections(request):
+    sections = Section.objects.prefetch_related('section_category').all()
+    serializer = SectionSerializer(sections, many=True)
+    return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
 
 @api_view(["GET", "POST"])

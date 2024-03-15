@@ -5,7 +5,7 @@ from rest_framework import serializers
 # from django_telegram_login.authentication import verify_telegram_authentication
 # from django_telegram_login.errors import NotTelegramDataError, TelegramDataIsOutdatedError 
 from .auth import verify_telegram_authentication, NotTelegramDataError, TelegramDataIsOutdatedError
-from .models import User, Advertisement, AdImage
+from .models import User, Advertisement, AdImage, Section, Category
 
 from core.utility import log
 # User = get_user_model()
@@ -83,8 +83,25 @@ class TelegramUserSerializer(serializers.ModelSerializer):
         except User.DoesNotExist:
             return User.objects.create(tg_id=tg_id, **validated_data)
 
+
 #####################################
 
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('id', 'name', 'is_active')
+
+class SectionSerializer(serializers.ModelSerializer):
+    section_category = CategorySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Section
+        fields = ('id', 'name', 'is_active', 'section_category')
+
+
+#####################################
+        
 
 class AdImageSerializer(serializers.ModelSerializer):
     class Meta:

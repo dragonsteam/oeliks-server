@@ -40,6 +40,17 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "phone"
 
 
+class Section(models.Model):
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+
+
+class Category(models.Model):
+    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='section_category')
+    name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+
+
 class Advertisement(models.Model):
     title_validator = UnicodeTitleValidator()
 
@@ -63,5 +74,3 @@ class Advertisement(models.Model):
 class AdImage(models.Model):
     ad = models.ForeignKey(Advertisement, null=True, on_delete=models.SET_NULL, related_name='ad_images')
     image = models.ImageField(upload_to='ad/images', validators=[validate_file_size])
-
-    
