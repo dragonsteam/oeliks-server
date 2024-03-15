@@ -154,6 +154,14 @@ def advertisements(request):
 
 @api_view(["GET"])
 @permission_classes([AllowAny])
+def advertisement(request, id):
+    ads = Advertisement.objects.prefetch_related('ad_images').get(pk=id)
+    serializer = AdvertisementSerializer(ads)
+    return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
 def vip_ads(request):
     ads = Advertisement.objects.prefetch_related('ad_images').filter(is_active=True)
     serializer = AdvertisementSerializer(ads, many=True)
