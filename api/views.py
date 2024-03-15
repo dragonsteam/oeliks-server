@@ -54,9 +54,6 @@ def ping_pong(request):
 def register(request):
     serializer = UserSerializer(data=request.data)
 
-    log("request.data***")
-    log(request.data)
-
     # return Response(
     #     {'detail': _('regular registration has been disabled by developers, please use Telegram to proceed')},
     #     status=status.HTTP_400_BAD_REQUEST,

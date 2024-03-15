@@ -1,7 +1,8 @@
+import os
 from django.core.management.base import BaseCommand
 from django.db import connection
 from pathlib import Path
-import os
+# from django_seed import
 
 
 class Command(BaseCommand):
