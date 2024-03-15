@@ -48,7 +48,7 @@ class Advertisement(models.Model):
         validators=[title_validator],
     )
     # category
-    about = models.CharField(max_length=2048, blank=True)
+    description = models.CharField(max_length=2048, blank=True)
     exchange_method = models.CharField(max_length=1, choices=[('p', 'priced'), ('e', 'exchange'), ('f', 'free')])
     price = models.IntegerField()
     currency = models.CharField(max_length=3, choices=CURRENCIES)

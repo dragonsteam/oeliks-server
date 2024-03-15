@@ -101,7 +101,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'title',
-            'about',
+            'description',
             'price',
             'currency',
             'date_posted',

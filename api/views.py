@@ -92,8 +92,8 @@ def telegram_auth(request):
         refresh = RefreshToken.for_user(user)
         return Response(
             {
-                "refresh": str(refresh),
-                "access": str(refresh.access_token)
+                "refreshToken": str(refresh),
+                "accessToken": str(refresh.access_token)
             },
             status=status.HTTP_200_OK,
         )
@@ -145,7 +145,7 @@ def advertisements(request):
 """
 {
     "title": "Ford Mustang 1969",
-    "about": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     "price": "69696",
     "currency": "USD",
     "is_auto_renew": true
@@ -168,13 +168,13 @@ def vip_ads(request):
     return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
 
-@api_view(["GET"])
-@permission_classes([IsAuthenticated])
-def ad_images(request, id):
-    if request.method == "GET":
-        ads = AdImage.objects.all()
-        serializer = AdImageSerializer(ads, many=True)
-        return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+# @api_view(["GET"])
+# @permission_classes([IsAuthenticated])
+# def ad_images(request, id):
+#     if request.method == "GET":
+#         ads = AdImage.objects.all()
+#         serializer = AdImageSerializer(ads, many=True)
+#         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
     
 
 class NewAdImageUploadAPIView(APIView):
