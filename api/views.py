@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, Advertisement, AdImage, Section
-from .serializers import UserSerializer, TelegramUserSerializer, AdvertisementSerializer, AdImageSerializer, SectionSerializer
+from .serializers import UserSerializer, TelegramUserSerializer, AdvertisementSerializer, AdvertisementsSerializer, AdImageSerializer, SectionSerializer
 
 from core.utility import log
 
@@ -131,8 +131,8 @@ def sections(request):
 @permission_classes([AllowAny]) ###
 def advertisements(request):
     if request.method == "GET":
-        ads = Advertisement.objects.filter(is_active=True)
-        serializer = AdvertisementSerializer(ads, many=True)
+        ads = Advertisement.objects.prefetch_related('ad_images').filter(is_active=True)
+        serializer = AdvertisementsSerializer(ads, many=True)
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
 
     if request.method == "POST":

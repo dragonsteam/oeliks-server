@@ -78,6 +78,8 @@ class TelegramUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         tg_id = validated_data.pop('id')
         tg_hash = validated_data.pop('hash')
+        auth_date = validated_data.pop('auth_date')
+        photo_url = validated_data.pop('photo_url')
         try:
             return User.objects.get(tg_id=tg_id)
         except User.DoesNotExist:
@@ -148,3 +150,25 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         # point selected pictures to this ad
         AdImage.objects.filter(id__in=self.context.get('pictures', []), ad__isnull=True).update(ad=new_ad)
         return new_ad
+    
+
+class AdvertisementsSerializer(serializers.ModelSerializer):
+    pictures = serializers.SerializerMethodField()
+    # pictures = AdImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Advertisement
+        fields = [
+            'id',
+            'title',
+            'price',
+            'currency',
+            'date_posted',
+            'pictures',
+        ]
+        # read_only_fields = ['pictures']
+
+    def get_pictures(self, obj):
+        pics = obj.ad_images.all()
+        pics_serializer = AdImageSerializer(pics, many=True)
+        return pics_serializer.data

@@ -4,24 +4,8 @@ from django.core.management.base import BaseCommand
 from faker import Faker, providers
 
 from api.models import Section, Category, Advertisement, AdImage
+from api.const import SECTIONS, CURRENCIES
 
-SECTIONS = [
-    'Children',
-    'Property',
-    'Vehicles',
-    'Jobs',
-    'Pets',
-    'Home',
-    'Gadges',
-    'Business',
-    'Magazines',
-    'Flowers',
-    'Cleaning',
-    'Baking',
-    'Beauty',
-    'Stationary',
-    'Spices'
-]
 
 def download_image(url, filename):
     try:
@@ -38,6 +22,7 @@ def generate_long_lorem(fake, min_length=500):
     text = ""
     while len(text) < min_length:
         text += fake.paragraph()
+        text += " "
     return text
 
 
@@ -59,9 +44,9 @@ class Command(BaseCommand):
         secs_len = len(SECTIONS)
         secs_count = Section.objects.all().count()
         if not secs_count >= secs_len:
-            for _ in range(len(SECTIONS)):
-                d = fake.unique.ec_section()
-                Section.objects.create(name=d)
+            for s in SECTIONS:
+                # d = fake.unique.ec_section()
+                Section.objects.create(name=s)
 
             check_section = Section.objects.all().count()
             print(f"{check_section} sections has been inserted")
@@ -71,7 +56,8 @@ class Command(BaseCommand):
             ad = Advertisement.objects.create(
                 title = fake.text(max_nb_chars=70),
                 description = generate_long_lorem(fake, min_length=1000),
-                price = fake.random_int() * 100
+                price = fake.random_int() * 100,
+                currency = fake.random_element(CURRENCIES)[0]
             )
 
             # ad images
