@@ -25,14 +25,14 @@ services:
       - DJANGO_SETTINGS_MODULE=core.settings.prod
       # - DB_URL=mysql://root:pwd@localhost/oeliks_db
     ports:
-      - 8000:8000
+      - 127.0.0.1:8000:8000
     volumes:
       - media:/app/media
 
   db:
     image: mysql:8.0
     ports:
-      - 3306:3306
+      - 127.0.0.1:3306:3306
     # restart: always
     environment:
       - MYSQL_DATABASE=oeliks_db
