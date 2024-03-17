@@ -4,8 +4,9 @@ echo ">>> Waiting for MySQL to start..."
 ./wait-for-it.sh db:3306 -t 30
 
 echo ">>> Preparing media directories"
-mkdir /media/ad
-mkdir /media/ad/images
+# mkdir /media/ad
+# mkdir /media/ad/images
+echo "hello" >> /media/ad/images/hello.txt
 
 echo ">>> Apply database migrations"
 poetry run python manage.py migrate
