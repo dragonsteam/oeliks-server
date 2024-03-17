@@ -6,6 +6,9 @@ echo ">>> Waiting for MySQL to start..."
 echo ">>> Apply database migrations"
 poetry run python manage.py migrate
 
+echo ">>> Populate database with dummy data"
+poetry run python manage.py createdata
+
 echo ">>> Compile messages..."
 poetry run python manage.py compilemessages > logs/compilemessages.log
 

@@ -33,6 +33,11 @@ jobs:
     runs-on: self-hosted
 
     steps:
+      - name: clean up old mess
+        run: |
+          cd ${{env.OELIKS_WORKDIR}}
+          docker compose -f docker-compose.prod.yml -v
+
       - name: pull image and deploy
         run: |
           cd ${{env.OELIKS_WORKDIR}}

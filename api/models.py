@@ -54,6 +54,7 @@ class Category(models.Model):
 class Advertisement(models.Model):
     title_validator = UnicodeTitleValidator()
 
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_ad')
     title = models.CharField(
         max_length=70,
         validators=[title_validator],

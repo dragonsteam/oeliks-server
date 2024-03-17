@@ -3,7 +3,7 @@ import requests
 from django.core.management.base import BaseCommand
 from faker import Faker, providers
 
-from api.models import Section, Category, Advertisement, AdImage
+from api.models import User, Section, Category, Advertisement, AdImage
 from api.const import SECTIONS, CURRENCIES
 
 
@@ -40,6 +40,13 @@ class Command(BaseCommand):
         fake = Faker()
         fake.add_provider(Provider)
 
+        # user
+        if not User.objects.all().count() >= 1:
+            User.objects.create(first_name="John", last_name="Doe", username="johndoe")
+            print("-- a user has been created.")
+
+        user = User.objects.all()[0]
+
         # section
         secs_len = len(SECTIONS)
         secs_count = Section.objects.all().count()
@@ -49,11 +56,12 @@ class Command(BaseCommand):
                 Section.objects.create(name=s)
 
             check_section = Section.objects.all().count()
-            print(f"{check_section} sections has been inserted")
+            print(f"-- {check_section} sections has been inserted.")
 
         # advertisement
         for _ in range(50):
             ad = Advertisement.objects.create(
+                user = user,
                 title = fake.text(max_nb_chars=70),
                 description = generate_long_lorem(fake, min_length=1000),
                 price = fake.random_int() * 100,
