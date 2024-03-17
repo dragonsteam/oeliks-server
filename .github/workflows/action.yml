@@ -36,7 +36,7 @@ jobs:
       - name: clean up old mess
         run: |
           cd ${{env.OELIKS_WORKDIR}}
-          docker compose -f docker-compose.prod.yml -v
+          docker compose -f docker-compose.prod.yml down -v
 
       - name: pull image and deploy
         run: |
