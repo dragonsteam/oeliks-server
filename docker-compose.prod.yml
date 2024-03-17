@@ -8,8 +8,8 @@ services:
     image: ghcr.io/dragonsteam/oeliks-front:latest
     # command: nginx -g daemon off
     ports:
-      - 80:80
-      - 443:443
+      - 8080:8080
+      # - 443:443
     volumes:
       - media:/usr/share/nginx/media
 
