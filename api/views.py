@@ -133,6 +133,12 @@ class AdvertisementDetail(RetrieveAPIView):
 """
     
 
-class NewAdImageUploadAPIView(CreateAPIView):
+class NewAdImageUploadAPIView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = AdImageSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
