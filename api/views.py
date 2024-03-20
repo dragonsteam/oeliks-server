@@ -7,10 +7,12 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
+# from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.generics import ListAPIView, CreateAPIView, ListCreateAPIView, RetrieveAPIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, Advertisement, AdImage, Section
-from .serializers import UserSerializer, TelegramUserSerializer, AdvertisementSerializer, AdvertisementsSerializer, AdImageSerializer, SectionSerializer
+from .serializers import UserSerializer, TelegramUserSerializer, AdvertisementSerializer, AdImageSerializer, SectionSerializer
 
 from core.utility import log
 
@@ -18,18 +20,6 @@ def custom404(request, exception=None):
     return JsonResponse(
         {"status_code": 404, "detail": "The resourse was not found"}, status=404
     )
-
-
-# def check_access(user, source: str, type):
-#     # if superuser always pass him :)
-#     if user.is_superuser:
-#         return True
-
-#     access = Access.objects.filter(pk=user.access_id).values(source)
-#     # print(str(access.query))
-#     if access:
-#         return type in access[0][source]
-#     return False
 
 def translate(text, language):
     curr_language = get_language()
@@ -48,27 +38,20 @@ def ping_pong(request):
     trans = translate(text, language='uz')
     return Response("pong " + trans, status=status.HTTP_200_OK)
 
+
 #
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def register(request):
-    serializer = UserSerializer(data=request.data)
+class Register(APIView):
+    permission_classes = [AllowAny]
 
-    # return Response(
-    #     {'detail': _('regular registration has been disabled by developers, please use Telegram to proceed')},
-    #     status=status.HTTP_400_BAD_REQUEST,
-    # )
-
-    if serializer.is_valid():
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(
             {"success": "user has been succesfully created"},
             status=status.HTTP_201_CREATED,
         )
-    return Response(
-        serializer.errors,
-        status=status.HTTP_400_BAD_REQUEST,
-    )
+
 
 """
 {
@@ -79,12 +62,12 @@ def register(request):
 }
 """
 
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def telegram_auth(request):
-    serializer = TelegramUserSerializer(data=request.data)
+class TelegramAuth(APIView):
+    permission_classes = [AllowAny]
 
-    if serializer.is_valid():
+    def post(self, request):
+        serializer = TelegramUserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         user = serializer.save()
         refresh = RefreshToken.for_user(user)
         return Response(
@@ -94,10 +77,6 @@ def telegram_auth(request):
             },
             status=status.HTTP_200_OK,
         )
-    return Response(
-        serializer.errors,
-        status=status.HTTP_400_BAD_REQUEST,
-    )
 
 """
 {
@@ -113,39 +92,35 @@ def telegram_auth(request):
 """
 
 
-@api_view(["GET"])
-@permission_classes([AllowAny])
-def users(request):
-    pass
+class Sections(APIView):
+    permission_classes = [AllowAny]
 
-
-@api_view(["GET"])
-@permission_classes([AllowAny])
-def sections(request):
-    sections = Section.objects.prefetch_related('section_category').all()
-    serializer = SectionSerializer(sections, many=True)
-    return Response({"data": serializer.data}, status=status.HTTP_200_OK)
-
-
-@api_view(["GET", "POST"])
-@permission_classes([AllowAny]) ###
-def advertisements(request):
-    if request.method == "GET":
-        ads = Advertisement.objects.prefetch_related('ad_images').filter(is_active=True)
-        serializer = AdvertisementsSerializer(ads, many=True)
+    def get(self, request):
+        sections = Section.objects.prefetch_related('section_category').all()
+        serializer = SectionSerializer(sections, many=True)
         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+    
 
-    if request.method == "POST":
-        serializer = AdvertisementSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"success": "advertisement has been succesfully created"},
-                status=status.HTTP_201_CREATED,
-            )
-        return Response(
-            serializer.errors, status=status.HTTP_400_BAD_REQUEST
-        )
+
+class AdvertisementList(ListCreateAPIView):
+    # permission_classes = [AllowAny]
+    queryset = Advertisement.objects.prefetch_related('ad_images').filter(is_active=True)
+    serializer_class = AdvertisementSerializer
+
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [IsAuthenticated()]
+        return [AllowAny()]
+
+    def get_serializer_context(self):
+        return {'user': self.request.user}
+
+
+class AdvertisementDetail(RetrieveAPIView):
+    permission_classes = [AllowAny]
+    queryset = Advertisement.objects.prefetch_related('ad_images').filter(is_active=True)
+    serializer_class = AdvertisementSerializer
+
  
 """
 {
@@ -156,49 +131,8 @@ def advertisements(request):
     "is_auto_renew": true
 }
 """
-
-@api_view(["GET"])
-@permission_classes([AllowAny])
-def advertisement(request, id):
-    ads = Advertisement.objects.prefetch_related('ad_images').get(pk=id)
-    serializer = AdvertisementSerializer(ads)
-    return Response({"data": serializer.data}, status=status.HTTP_200_OK)
-
-
-@api_view(["GET"])
-@permission_classes([AllowAny])
-def vip_ads(request):
-    ads = Advertisement.objects.prefetch_related('ad_images').filter(is_active=True)
-    serializer = AdvertisementSerializer(ads, many=True)
-    return Response({"data": serializer.data}, status=status.HTTP_200_OK)
-
-
-# @api_view(["GET"])
-# @permission_classes([IsAuthenticated])
-# def ad_images(request, id):
-#     if request.method == "GET":
-#         ads = AdImage.objects.all()
-#         serializer = AdImageSerializer(ads, many=True)
-#         return Response({"data": serializer.data}, status=status.HTTP_200_OK)
     
 
-class NewAdImageUploadAPIView(APIView):
-    # parser_classes = (MultiPartParser, FormParser)
+class NewAdImageUploadAPIView(CreateAPIView):
+    permission_classes = [IsAuthenticated]
     serializer_class = AdImageSerializer
-    # permission_classes = [AllowAny]
-    
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            # you can access the file like this from serializer
-            # uploaded_file = serializer.validated_data["file"]
-            serializer.save()
-            return Response(
-                serializer.data,
-                status=status.HTTP_201_CREATED
-            )
-        
-        return Response(
-            serializer.errors,
-            status=status.HTTP_400_BAD_REQUEST
-        )

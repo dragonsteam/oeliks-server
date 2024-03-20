@@ -59,7 +59,7 @@ class Command(BaseCommand):
             print(f"-- {check_section} sections has been inserted.")
 
         # advertisement
-        for _ in range(50):
+        for _ in range(30):
             ad = Advertisement.objects.create(
                 user = user,
                 title = fake.text(max_nb_chars=70),

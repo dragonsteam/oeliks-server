@@ -64,13 +64,10 @@ class TelegramUserSerializer(serializers.ModelSerializer):
         # check authorization
         try:
             check_result = verify_telegram_authentication(settings.TELEGRAM_BOT_TOKEN, request_data=data)
-            log('@ result')
             log(check_result)
         except TelegramDataIsOutdatedError:
-            log('* outdated')
             raise serializers.ValidationError({"name": "hash is outdated"})
         except NotTelegramDataError:
-            log('* invalid data')
             raise serializers.ValidationError({"name": "hash is invalid"})
 
         return data
@@ -92,14 +89,14 @@ class TelegramUserSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id', 'name', 'is_active')
+        fields = ('id', 'name')
 
 class SectionSerializer(serializers.ModelSerializer):
     section_category = CategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Section
-        fields = ('id', 'name', 'is_active', 'section_category')
+        fields = ('id', 'name', 'section_category')
 
 
 #####################################
@@ -126,7 +123,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
             'date_posted',
             'pictures',
         ]
-        # read_only_fields = ['pictures']
+        read_only_fields = ['date_posted']
 
     def get_pictures(self, obj):
         pics = obj.ad_images.all()
@@ -146,29 +143,8 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         return value
     
     def create(self, validated_data):
-        new_ad = Advertisement.objects.create(**validated_data)
+        user = self.context.get('user')
+        new_ad = Advertisement.objects.create(user=user, **validated_data)
         # point selected pictures to this ad
         AdImage.objects.filter(id__in=self.context.get('pictures', []), ad__isnull=True).update(ad=new_ad)
         return new_ad
-    
-
-class AdvertisementsSerializer(serializers.ModelSerializer):
-    pictures = serializers.SerializerMethodField()
-    # pictures = AdImageSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Advertisement
-        fields = [
-            'id',
-            'title',
-            'price',
-            'currency',
-            'date_posted',
-            'pictures',
-        ]
-        # read_only_fields = ['pictures']
-
-    def get_pictures(self, obj):
-        pics = obj.ad_images.all()
-        pics_serializer = AdImageSerializer(pics, many=True)
-        return pics_serializer.data

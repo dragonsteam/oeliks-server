@@ -10,9 +10,6 @@ mkdir media/ad/images
 echo ">>> Apply database migrations"
 poetry run python manage.py migrate
 
-echo ">>> Populate database with dummy data"
-poetry run python manage.py createdata
-
 echo ">>> Compile messages..."
 poetry run python manage.py compilemessages > logs/compilemessages.log
 
@@ -26,6 +23,9 @@ if [ "$1" = "dev" ]; then
 else
     echo ">> Collecting static files..."
     poetry run python manage.py collectstatic --noinput
+
+    echo ">>> Populate database with dummy data"
+    poetry run python manage.py createdata
 
     echo ">> Running as production server"
     poetry run gunicorn core.wsgi -w 3 -b 0.0.0.0:8000
