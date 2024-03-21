@@ -19,10 +19,11 @@ services:
       - db
     image: ghcr.io/dragonsteam/oeliks-server:latest
     command: ./docker-entrypoint.sh
-    env_file:
-      - ./.env
+    # env_file:
+    #   - ./.env
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.prod
+      - SECRET_KEY=/run/secrets/oeliks_secret_key
       # - DB_URL=mysql://root:pwd@localhost/oeliks_db
     ports:
       - 127.0.0.1:8000:8000
