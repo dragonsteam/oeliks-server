@@ -24,6 +24,7 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings.prod
       - SECRET_KEY=/run/secrets/oeliks_secret_key
+      - TELEGRAM_BOT_TOKEN=/run/secrets/oeliks_telegram_token
       # - DB_URL=mysql://root:pwd@localhost/oeliks_db
     ports:
       - 127.0.0.1:8000:8000
