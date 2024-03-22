@@ -2,7 +2,7 @@ from .common import *
 
 DEBUG = False
 ALLOWED_HOSTS = ["django"]
-SECRET_KEY = os.getenv("OELIKS_SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # Database
 DATABASES = {
