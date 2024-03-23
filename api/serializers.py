@@ -116,6 +116,7 @@ class AdvertisementSerializer(serializers.ModelSerializer):
         model = Advertisement
         fields = [
             'id',
+            'user',
             'title',
             'description',
             'price',

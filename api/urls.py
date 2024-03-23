@@ -11,13 +11,13 @@ urlpatterns = [
     path("ping/", views.ping_pong),
 
     path("register/", views.Register.as_view()),
-    # path("register/", views.register),
 
     path("sections/", views.Sections.as_view()),
 
     path("advertisements/", views.AdvertisementList.as_view()),
     path("advertisements/<int:pk>", views.AdvertisementDetail.as_view()),
-    # path("advertisements/vip", views.vip_ads),
     path("advertisements/images/new", views.NewAdImageUploadAPIView.as_view()),
-    # path("advertisements/images/new", new_image),
+
+    # path("vendor/<int:pk>"),
+    path("vendor/<int:pk>/advertisements", views.VendorAdvertisementList.as_view()),
 ]

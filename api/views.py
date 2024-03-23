@@ -121,6 +121,15 @@ class AdvertisementDetail(RetrieveAPIView):
     queryset = Advertisement.objects.prefetch_related('ad_images').filter(is_active=True)
     serializer_class = AdvertisementSerializer
 
+
+class VendorAdvertisementList(ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = AdvertisementSerializer
+
+    def get_queryset(self):
+        vendor_id = self.kwargs.get('pk')
+        return Advertisement.objects.prefetch_related('ad_images').filter(is_active=True, user=vendor_id)
+
  
 """
 {
